@@ -2,20 +2,29 @@
 
 import { useState } from 'react';
 import { Location } from '@/types/location';
+import { UnitSystem } from '@/lib/units';
+import { formatAltitude, UNIT_LABELS } from '@/lib/units';
 import { getCurrentLocation, geocodeLocation } from '@/lib/geolocation';
 
 interface LocationInputProps {
   onLocationChange: (location: Location) => void;
   currentLocation?: Location;
+  unitSystem?: UnitSystem;
 }
 
-export default function LocationInput({ onLocationChange, currentLocation }: LocationInputProps) {
+export default function LocationInput({
+  onLocationChange,
+  currentLocation,
+  unitSystem = 'metric'
+}: LocationInputProps) {
   const [manualLat, setManualLat] = useState('');
   const [manualLon, setManualLon] = useState('');
   const [manualAlt, setManualAlt] = useState('0');
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const units = UNIT_LABELS[unitSystem];
 
   const handleGeolocation = async () => {
     setLoading(true);
@@ -67,11 +76,11 @@ export default function LocationInput({ onLocationChange, currentLocation }: Loc
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold mb-4">Location Input</h2>
+    <div className="bg-white dark:bg-slate-900 p-6 rounded-lg shadow-md transition-colors">
+      <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Location Input</h2>
 
       {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <div className="bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-200 px-4 py-3 rounded mb-4">
           {error}
         </div>
       )}
@@ -81,7 +90,7 @@ export default function LocationInput({ onLocationChange, currentLocation }: Loc
         <button
           onClick={handleGeolocation}
           disabled={loading}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
+          className="bg-blue-500 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
         >
           {loading ? 'Getting Location...' : 'Use Current Location'}
         </button>
@@ -89,7 +98,7 @@ export default function LocationInput({ onLocationChange, currentLocation }: Loc
 
       {/* Search by City/Address */}
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           Search by City or Address
         </label>
         <div className="flex">
@@ -98,13 +107,13 @@ export default function LocationInput({ onLocationChange, currentLocation }: Loc
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Enter city, zip code, or address"
-            className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-1 px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-800 text-gray-900 dark:text-white"
             onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
           />
           <button
             onClick={handleSearch}
             disabled={loading}
-            className="bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded-r-md disabled:opacity-50"
+            className="bg-green-500 hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700 text-white px-4 py-2 rounded-r-md disabled:opacity-50"
           >
             Search
           </button>
@@ -113,7 +122,7 @@ export default function LocationInput({ onLocationChange, currentLocation }: Loc
 
       {/* Manual Coordinates */}
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           Manual Coordinates
         </label>
         <div className="grid grid-cols-3 gap-2">
@@ -123,7 +132,7 @@ export default function LocationInput({ onLocationChange, currentLocation }: Loc
             onChange={(e) => setManualLat(e.target.value)}
             placeholder="Latitude"
             step="0.000001"
-            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-800 text-gray-900 dark:text-white"
           />
           <input
             type="number"
@@ -131,19 +140,19 @@ export default function LocationInput({ onLocationChange, currentLocation }: Loc
             onChange={(e) => setManualLon(e.target.value)}
             placeholder="Longitude"
             step="0.000001"
-            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-800 text-gray-900 dark:text-white"
           />
           <input
             type="number"
             value={manualAlt}
             onChange={(e) => setManualAlt(e.target.value)}
-            placeholder="Altitude (m)"
-            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder={`Altitude (${units.altitude})`}
+            className="px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-800 text-gray-900 dark:text-white"
           />
         </div>
         <button
           onClick={handleManualInput}
-          className="mt-2 bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
+          className="mt-2 bg-purple-500 hover:bg-purple-700 dark:bg-purple-600 dark:hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
         >
           Set Coordinates
         </button>
@@ -151,12 +160,12 @@ export default function LocationInput({ onLocationChange, currentLocation }: Loc
 
       {/* Current Location Display */}
       {currentLocation && (
-        <div className="mt-4 p-3 bg-gray-100 rounded">
-          <h3 className="font-medium">Current Location:</h3>
-          <p>Lat: {currentLocation.latitude.toFixed(6)}</p>
-          <p>Lon: {currentLocation.longitude.toFixed(6)}</p>
-          <p>Alt: {currentLocation.altitude.toFixed(0)} m</p>
-          {currentLocation.name && <p>Name: {currentLocation.name}</p>}
+        <div className="mt-4 p-3 bg-gray-100 dark:bg-slate-800 rounded">
+          <h3 className="font-medium text-gray-900 dark:text-white">Current Location:</h3>
+          <p className="text-gray-900 dark:text-gray-300">Lat: {currentLocation.latitude.toFixed(6)}</p>
+          <p className="text-gray-900 dark:text-gray-300">Lon: {currentLocation.longitude.toFixed(6)}</p>
+          <p className="text-gray-900 dark:text-gray-300">Alt: {formatAltitude(currentLocation.altitude, unitSystem)} {units.altitude}</p>
+          {currentLocation.name && <p className="text-gray-900 dark:text-gray-300">Name: {currentLocation.name}</p>}
         </div>
       )}
     </div>

@@ -72,18 +72,18 @@ export default function SatelliteSelector({ onSatelliteSelect, selectedSatellite
   ];
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold mb-4">Satellite Selection</h2>
+    <div className="bg-white dark:bg-slate-900 p-6 rounded-lg shadow-md transition-colors">
+      <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Satellite Selection</h2>
 
       {/* Category Selection */}
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           Category
         </label>
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-800 text-gray-900 dark:text-white"
         >
           {categories.map(category => (
             <option key={category.value} value={category.value}>
@@ -95,7 +95,7 @@ export default function SatelliteSelector({ onSatelliteSelect, selectedSatellite
 
       {/* Search */}
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           Search Satellites
         </label>
         <input
@@ -103,28 +103,28 @@ export default function SatelliteSelector({ onSatelliteSelect, selectedSatellite
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search by name or NORAD ID"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-800 text-gray-900 dark:text-white"
         />
       </div>
 
       {/* Satellite List */}
       <div className="max-h-64 overflow-y-auto">
         {loading ? (
-          <div className="text-center py-4">Loading satellites...</div>
+          <div className="text-center py-4 text-gray-600 dark:text-gray-400">Loading satellites...</div>
         ) : (
           <div className="space-y-2">
             {filteredSatellites.map(satellite => (
               <div
                 key={satellite.noradId}
                 onClick={() => onSatelliteSelect(satellite)}
-                className={`p-3 border rounded-md cursor-pointer hover:bg-gray-50 ${
+                className={`p-3 border rounded-md cursor-pointer transition-colors ${
                   selectedSatellite?.noradId === satellite.noradId
-                    ? 'border-blue-500 bg-blue-50'
-                    : 'border-gray-200'
+                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900'
+                    : 'border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-800'
                 }`}
               >
-                <div className="font-medium">{satellite.name}</div>
-                <div className="text-sm text-gray-600">NORAD ID: {satellite.noradId}</div>
+                <div className="font-medium text-gray-900 dark:text-white">{satellite.name}</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">NORAD ID: {satellite.noradId}</div>
               </div>
             ))}
           </div>
@@ -133,10 +133,10 @@ export default function SatelliteSelector({ onSatelliteSelect, selectedSatellite
 
       {/* Selected Satellite Info */}
       {selectedSatellite && (
-        <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded">
-          <h3 className="font-medium text-blue-900">Selected Satellite:</h3>
-          <p className="text-blue-800">{selectedSatellite.name}</p>
-          <p className="text-sm text-blue-600">NORAD ID: {selectedSatellite.noradId}</p>
+        <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-800 rounded transition-colors">
+          <h3 className="font-medium text-blue-900 dark:text-blue-200">Selected Satellite:</h3>
+          <p className="text-blue-800 dark:text-blue-300">{selectedSatellite.name}</p>
+          <p className="text-sm text-blue-600 dark:text-blue-400">NORAD ID: {selectedSatellite.noradId}</p>
         </div>
       )}
     </div>

@@ -103,9 +103,9 @@ export default function OrbitalPlot({ data }: OrbitalPlotProps) {
 
   if (!data || data.time.length === 0) {
     return (
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold mb-4">Orbital Plot</h2>
-        <div className="text-center text-gray-500 py-16">
+      <div className="bg-white dark:bg-slate-900 p-6 rounded-lg shadow-md transition-colors">
+        <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Orbital Plot</h2>
+        <div className="text-center text-gray-500 dark:text-gray-400 py-16">
           No data available. Select a satellite and location to view the orbital plot.
         </div>
       </div>
@@ -113,8 +113,8 @@ export default function OrbitalPlot({ data }: OrbitalPlotProps) {
   }
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold mb-4">Orbital Plot</h2>
+    <div className="bg-white dark:bg-slate-900 p-6 rounded-lg shadow-md transition-colors">
+      <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Orbital Plot</h2>
       <div className="h-80">
         <Line ref={chartRef} data={chartData} options={options} />
       </div>
