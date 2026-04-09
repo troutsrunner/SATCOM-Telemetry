@@ -1,53 +1,195 @@
 # SATCOM-Telemetry
 
-Know where you are, the satellite you want to see is, and when you can see it.
+Real-time satellite tracking and telemetry application. Know where you are, when satellites pass overhead, and track their orbital data in real-time.
 
-## Technical Blueprint
+## Features
 
-This document outlines the comprehensive technical architecture for a web application that tracks real-time satellite data relative to a user's specific location.
+- Real-time satellite tracking using TLE data
+- Location services with automatic geolocation or manual coordinate input
+- Live metrics including azimuth, elevation, range, and velocity calculations
+- Interactive orbital visualization with charts
+- Pass prediction calculations for satellite visibility
+- Interactive maps showing satellite positions
+- Responsive design for desktop and mobile devices
 
-### Overview
+## Quick Start
 
-The SATCOM-Telemetry application provides users with real-time satellite tracking capabilities, including orbital position calculations, visibility predictions, and interactive data visualization. The system integrates with Two-Line Element (TLE) data sources to compute satellite positions and relative metrics from the user's perspective.
+### Prerequisites
 
-### Core Features
+- Node.js 18+
+- npm or yarn
 
-1. **User Input & Geolocation**
-   - Manual location input (city/zip code or latitude/longitude coordinates)
-   - Automatic geolocation using browser APIs
-   - Conversion to precise WGS84 coordinates (latitude, longitude, observer altitude)
+### Installation
 
-2. **Satellite Tracking**
-   - Integration with TLE data sources (Celestrak, Space-Track.org)
-   - Real-time satellite position calculation using SGP4/SDP4 propagation models
-   - Support for multiple satellite categories (communication, weather, GPS, etc.)
+1. Clone the repository:
+```bash
+git clone https://github.com/troutsrunner/SATCOM-Telemetry.git
+cd SATCOM-Telemetry/app
+```
 
-3. **Relative Spatial Calculations**
-   - Azimuth and elevation angles from user's perspective
-   - Orbital velocity calculation
-   - Slant range (instantaneous distance) computation
-   - Line-of-sight visibility determination
+2. Install dependencies:
+```bash
+npm install
+```
 
-4. **Pass Prediction**
-   - Next visible pass prediction for non-geostationary satellites
-   - Radio contact windows calculation
-   - Pass duration, maximum elevation, and timing details
+3. Run the development server:
+```bash
+npm run dev
+```
 
-5. **Data Visualization**
-   - Real-time dashboard with live metrics
-   - Orbital track visualization
-   - Azimuth/elevation plots over time
-   - Pass prediction timeline
+4. Open http://localhost:3000 in your browser.
 
-### System Architecture
+### Build for Production
 
-#### Technology Stack
+```bash
+npm run build
+npm start
+```
 
-- **Frontend Framework**: Next.js 14+ with React 18+
-- **Programming Language**: TypeScript for type safety
-- **Styling**: Tailwind CSS for responsive design
-- **State Management**: Zustand for client-side state
-- **Data Fetching**: TanStack Query (React Query) for API management
+## Usage
+
+1. Set your location using the location input (automatic geolocation or manual coordinates)
+2. Select a satellite from various categories (GPS, weather, communication, etc.)
+3. View real-time satellite metrics and orbital information
+4. Check pass predictions to see when the satellite will be visible
+
+## Architecture
+
+This application uses modern web technologies:
+
+- Frontend: Next.js 14+ with React 18+
+- Language: TypeScript for type safety
+- Styling: Tailwind CSS
+- State Management: Zustand
+- Data Fetching: TanStack Query
+- Satellite Calculations: satellite.js library
+- Maps: Leaflet with React-Leaflet
+- Charts: Chart.js with react-chartjs-2
+
+### Data Flow
+
+1. User inputs location (geolocation or manual coordinates)
+2. Satellite catalog is fetched from TLE data sources
+3. Real-time orbital calculations using SGP4 propagation
+4. Observer metrics calculated (azimuth, elevation, range)
+5. Data visualized through interactive components
+
+## Contributing
+
+We welcome contributions! Please see our Contributing Guide for details.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Security
+
+Please see our Security Policy for information on reporting vulnerabilities.
+
+## Acknowledgments
+
+- satellite.js for orbital calculations
+- Celestrak for TLE data sources
+- Next.js for the React framework</content>
+<parameter name="filePath">/workspaces/SATCOM-Telemetry/README.md# SATCOM-Telemetry
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-000000?logo=next.js&logoColor=white)](https://nextjs.org/)
+
+Real-time satellite tracking and telemetry application. Know where you are, when satellites pass overhead, and track their orbital data in real-time.
+
+![SATCOM-Telemetry Dashboard](https://via.placeholder.com/800x400/1a1a1a/ffffff?text=SATCOM-Telemetry+Dashboard)
+
+## Features
+
+- **Real-time Satellite Tracking** - Track satellite positions using TLE data
+- **Location Services** - Automatic geolocation or manual coordinate input
+- **Live Metrics** - Azimuth, elevation, range, and velocity calculations
+- **Orbital Visualization** - Interactive charts showing satellite paths
+- **Pass Predictions** - Calculate when satellites will be visible
+- **Interactive Maps** - Visualize satellite positions on maps
+- **Responsive Design** - Works on desktop and mobile devices
+
+## Quick Start
+
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/troutsrunner/SATCOM-Telemetry.git
+cd SATCOM-Telemetry/app
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Run the development server:
+```bash
+npm run dev
+```
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### Build for Production
+
+```bash
+npm run build
+npm start
+```
+
+## Usage
+
+1. **Set Your Location**: Use the location input to set your observing position
+2. **Select a Satellite**: Choose from various satellite categories (GPS, weather, communication, etc.)
+3. **View Real-time Data**: Monitor live satellite metrics and orbital information
+4. **Check Pass Predictions**: See when the satellite will next be visible from your location
+
+## Architecture
+
+This application uses modern web technologies:
+
+- **Frontend**: Next.js 14+ with React 18+
+- **Language**: TypeScript for type safety
+- **Styling**: Tailwind CSS
+- **State Management**: Zustand
+- **Data Fetching**: TanStack Query
+- **Satellite Calculations**: satellite.js library
+- **Maps**: Leaflet with React-Leaflet
+- **Charts**: Chart.js with react-chartjs-2
+
+### Data Flow
+
+1. User inputs location (geolocation or manual coordinates)
+2. Satellite catalog is fetched from TLE data sources
+3. Real-time orbital calculations using SGP4 propagation
+4. Observer metrics calculated (azimuth, elevation, range)
+5. Data visualized through interactive components
+
+## Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details.
+
+## Security
+
+Please see our [Security Policy](SECURITY.md) for information on reporting vulnerabilities.
+
+## Acknowledgments
+
+- [satellite.js](https://github.com/shashwatak/satellite-js) for orbital calculations
+- [Celestrak](https://celestrak.org/) for TLE data sources
+- [Next.js](https://nextjs.org/) for the React framework
 - **Visualization**: Chart.js with react-chartjs-2 for charts and graphs
 - **Maps**: Leaflet with React-Leaflet for location visualization
 - **Real-time Updates**: Server-Sent Events (SSE) or WebSocket for live data
