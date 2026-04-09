@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { Satellite } from '@/types/satellite';
 import { fetchSatelliteCatalog } from '@/lib/tle';
 
@@ -16,23 +16,22 @@ export default function SatelliteSelector({ onSatelliteSelect, selectedSatellite
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('stations');
 
-  const loadSatellites = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const catalog = await fetchSatelliteCatalog(selectedCategory);
-      setSatellites(catalog);
-    } catch (err) {
-      console.error('Failed to load satellites:', err);
-      setError(err instanceof Error ? err.message : 'Failed to load satellites');
-      setSatellites([]); // Clear satellites on error
-    }
-    setLoading(false);
-  }, [selectedCategory]);
-
   useEffect(() => {
+    const loadSatellites = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const catalog = await fetchSatelliteCatalog(selectedCategory);
+        setSatellites(catalog);
+      } catch (err) {
+        console.error('Failed to load satellites:', err);
+        setError(err instanceof Error ? err.message : 'Failed to load satellites');
+        setSatellites([]); // Clear satellites on error
+      }
+      setLoading(false);
+    };
     loadSatellites();
-  }, [loadSatellites]);
+  }, [selectedCategory]);
 
   const filteredSatellites = satellites.filter(satellite =>
     satellite.name.toLowerCase().includes(searchTerm.toLowerCase())

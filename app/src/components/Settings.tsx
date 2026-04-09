@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useLayoutEffect } from 'react';
 import { UnitSystem } from '@/lib/units';
 import { DarkMode, useSettings } from '@/hooks/useSettings';
 
@@ -10,12 +10,9 @@ interface SettingsProps {
 
 export default function Settings({ className = '' }: SettingsProps) {
   const { unitSystem, setUnitSystem, darkMode, setDarkMode } = useSettings();
-  const [mounted, setMounted] = useState(false);
 
   // Handle dark mode changes
-  useEffect(() => {
-    setMounted(true);
-    
+  useLayoutEffect(() => {
     const applyDarkMode = () => {
       const htmlElement = document.documentElement;
       
@@ -43,8 +40,6 @@ export default function Settings({ className = '' }: SettingsProps) {
       return () => mediaQuery.removeEventListener('change', handleChange);
     }
   }, [darkMode]);
-
-  if (!mounted) return null;
 
   return (
     <div className={`bg-white dark:bg-slate-900 p-6 rounded-lg shadow-md transition-colors ${className}`}>

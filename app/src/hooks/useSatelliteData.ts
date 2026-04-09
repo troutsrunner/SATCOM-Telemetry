@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Satellite, SatellitePosition, ObserverMetrics } from '@/types/satellite';
 import { Location } from '@/types/location';
 import { parseTLE, getSatellitePosition, calculateObserverMetrics } from '@/lib/satellite';
@@ -15,10 +15,20 @@ export function useSatelliteData(satellite?: Satellite, location?: Location) {
   const [data, setData] = useState<SatelliteData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const hasValidDeps = useRef(false);
 
   useEffect(() => {
-    if (!satellite || !location) {
+    const currentlyValid = !!(satellite && location);
+    if (hasValidDeps.current && !currentlyValid) {
+      // Dependencies became invalid, clear data
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setData(null);
+    }
+    hasValidDeps.current = currentlyValid;
+
+    if (!currentlyValid) {
+      setLoading(false);
+      setError(null);
       return;
     }
 
