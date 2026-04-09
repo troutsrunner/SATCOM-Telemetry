@@ -12,16 +12,20 @@ interface SatelliteSelectorProps {
 export default function SatelliteSelector({ onSatelliteSelect, selectedSatellite }: SatelliteSelectorProps) {
   const [satellites, setSatellites] = useState<Satellite[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('stations');
 
   const loadSatellites = useCallback(async () => {
     setLoading(true);
+    setError(null);
     try {
       const catalog = await fetchSatelliteCatalog(selectedCategory);
       setSatellites(catalog);
-    } catch (error) {
-      console.error('Failed to load satellites:', error);
+    } catch (err) {
+      console.error('Failed to load satellites:', err);
+      setError(err instanceof Error ? err.message : 'Failed to load satellites');
+      setSatellites([]); // Clear satellites on error
     }
     setLoading(false);
   }, [selectedCategory]);
@@ -111,6 +115,21 @@ export default function SatelliteSelector({ onSatelliteSelect, selectedSatellite
       <div className="max-h-64 overflow-y-auto">
         {loading ? (
           <div className="text-center py-4 text-gray-600 dark:text-gray-400">Loading satellites...</div>
+        ) : error ? (
+          <div className="text-center py-4">
+            <div className="text-red-600 dark:text-red-400 mb-2">Error loading satellites</div>
+            <div className="text-sm text-gray-600 dark:text-gray-400">{error}</div>
+            <button
+              onClick={loadSatellites}
+              className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+            >
+              Retry
+            </button>
+          </div>
+        ) : filteredSatellites.length === 0 ? (
+          <div className="text-center py-4 text-gray-600 dark:text-gray-400">
+            No satellites found in this category
+          </div>
         ) : (
           <div className="space-y-2">
             {filteredSatellites.map(satellite => (

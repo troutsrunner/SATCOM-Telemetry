@@ -28,17 +28,24 @@ export async function getCurrentLocation(): Promise<Location> {
 }
 
 export async function geocodeLocation(query: string): Promise<GeocodeResult> {
-  // Using a free geocoding service - in production, use a proper API
-  const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(query)}&key=demo`);
+  // Using Nominatim (OpenStreetMap) geocoding service - free and no API key required
+  const response = await fetch(
+    `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1&addressdetails=1`
+  );
+
+  if (!response.ok) {
+    throw new Error('Geocoding service unavailable');
+  }
+
   const data = await response.json();
 
-  if (data.results && data.results.length > 0) {
-    const result = data.results[0];
+  if (data && data.length > 0) {
+    const result = data[0];
     return {
-      latitude: result.geometry.lat,
-      longitude: result.geometry.lng,
-      name: result.formatted,
-      country: result.components.country
+      latitude: parseFloat(result.lat),
+      longitude: parseFloat(result.lon),
+      name: result.display_name,
+      country: result.address?.country || 'Unknown'
     };
   }
 

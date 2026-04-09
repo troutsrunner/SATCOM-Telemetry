@@ -14,7 +14,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Unit conversion utilities for distances, altitudes, and velocities
 - Persistent settings storage with Zustand
 
-## [1.0.0] - 2026-04-09
+## [1.1.0] - 2026-04-09
+
+### Added
+- **Real Satellite Data Integration**: Replaced hardcoded demo data with live Celestrak API
+- **Enhanced Geocoding**: Switched from demo API to free Nominatim (OpenStreetMap) service
+- **TLE Data Caching**: 24-hour cache for satellite TLE data to improve performance
+- **Improved Pass Prediction**: Binary search algorithm for more accurate pass start/end times
+- **Comprehensive Error Handling**: Error states, retry buttons, and user feedback throughout UI
+- **API Validation**: Input validation and detailed error responses for all endpoints
+- **Loading States**: Loading indicators and error boundaries in components
+- **Jest Testing Framework**: Added test configuration and basic test suite
+- **Code Quality**: Fixed ESLint warnings and improved code maintainability
+
+### Changed
+- **Satellite Categories**: Now supports all 35+ categories from Celestrak (previously only ISS)
+- **Geocoding Service**: No longer requires API keys, uses free Nominatim service
+- **Pass Prediction Accuracy**: Improved from 10-minute intervals to 1-minute precision
+- **API Responses**: Enhanced with metadata and better error messaging
+- **Performance**: Reduced API calls through intelligent caching
+
+### Fixed
+- Removed unused imports and variables
+- Fixed Tailwind CSS configuration export
+- Improved component error handling
+- Better TypeScript type safety
+
+### Technical Improvements
+- Enhanced satellite position calculations
+- More robust TLE parsing with fallbacks
+- Better coordinate validation
+- Improved mobile responsiveness
+- Added comprehensive API documentation updates
 
 ### Added
 - Initial release of SATCOM-Telemetry web application

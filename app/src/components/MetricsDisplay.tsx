@@ -2,7 +2,7 @@
 
 import { ObserverMetrics } from '@/types/satellite';
 import { UnitSystem } from '@/lib/units';
-import { formatAltitude, formatDistance, formatVelocity, formatAngle, UNIT_LABELS } from '@/lib/units';
+import { formatDistance, formatVelocity, formatAngle, UNIT_LABELS } from '@/lib/units';
 
 interface MetricsDisplayProps {
   metrics?: ObserverMetrics;

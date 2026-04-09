@@ -76,42 +76,65 @@ export function predictPasses(
   const passes: PassEvent[] = [];
   const endDate = new Date(startDate.getTime() + days * 24 * 60 * 60 * 1000);
 
-  // Simple pass prediction - check every 10 minutes
+  // Check every minute for better accuracy
   let currentTime = new Date(startDate);
+  const intervalMinutes = 1; // Check every minute
 
   while (currentTime < endDate) {
     const position = getSatellitePosition(satrec, currentTime);
     const metrics = calculateObserverMetrics(position, observerPos);
 
     if (metrics.elevation > 0) {
-      // Find pass start
+      // Find pass start (go back until elevation <= 0)
       let passStart = new Date(currentTime);
-      let passEnd = new Date(currentTime);
-      let maxElevation = metrics.elevation;
-      let azimuthAtMax = metrics.azimuth;
+      let searchTime = new Date(currentTime);
 
-      // Go backwards to find start
-      let checkTime = new Date(currentTime);
-      while (checkTime > startDate) {
-        checkTime.setMinutes(checkTime.getMinutes() - 1);
-        const checkPos = getSatellitePosition(satrec, checkTime);
-        const checkMetrics = calculateObserverMetrics(checkPos, observerPos);
-        if (checkMetrics.elevation <= 0) {
-          passStart = new Date(checkTime);
-          break;
+      // Binary search for more precise start time
+      let low = new Date(currentTime.getTime() - 30 * 60 * 1000); // 30 minutes back
+      let high = new Date(currentTime);
+
+      for (let i = 0; i < 10; i++) { // 10 iterations for precision
+        const mid = new Date((low.getTime() + high.getTime()) / 2);
+        const midPos = getSatellitePosition(satrec, mid);
+        const midMetrics = calculateObserverMetrics(midPos, observerPos);
+
+        if (midMetrics.elevation > 0) {
+          high = mid;
+        } else {
+          low = mid;
         }
       }
+      passStart = high;
 
-      // Go forwards to find end
-      checkTime = new Date(currentTime);
-      while (checkTime < endDate) {
-        checkTime.setMinutes(checkTime.getMinutes() + 1);
+      // Find pass end (go forward until elevation <= 0)
+      let passEnd = new Date(currentTime);
+      low = new Date(currentTime);
+      high = new Date(currentTime.getTime() + 30 * 60 * 1000); // 30 minutes forward
+
+      for (let i = 0; i < 10; i++) {
+        const mid = new Date((low.getTime() + high.getTime()) / 2);
+        const midPos = getSatellitePosition(satrec, mid);
+        const midMetrics = calculateObserverMetrics(midPos, observerPos);
+
+        if (midMetrics.elevation > 0) {
+          low = mid;
+        } else {
+          high = mid;
+        }
+      }
+      passEnd = low;
+
+      // Calculate max elevation during the pass
+      let maxElevation = 0;
+      let azimuthAtMax = 0;
+      const passDuration = passEnd.getTime() - passStart.getTime();
+      const steps = Math.min(50, Math.max(10, Math.floor(passDuration / (60 * 1000)))); // At least 10 steps, max 50
+
+      for (let i = 0; i <= steps; i++) {
+        const checkTime = new Date(passStart.getTime() + (passDuration * i) / steps);
         const checkPos = getSatellitePosition(satrec, checkTime);
         const checkMetrics = calculateObserverMetrics(checkPos, observerPos);
-        if (checkMetrics.elevation <= 0) {
-          passEnd = new Date(checkTime);
-          break;
-        }
+
         if (checkMetrics.elevation > maxElevation) {
           maxElevation = checkMetrics.elevation;
           azimuthAtMax = checkMetrics.azimuth;
@@ -120,17 +143,21 @@ export function predictPasses(
 
       const duration = (passEnd.getTime() - passStart.getTime()) / (1000 * 60);
 
-      passes.push({
-        startTime: passStart,
-        endTime: passEnd,
-        maxElevation,
-        duration,
-        azimuthAtMax
-      });
+      // Only include passes longer than 1 minute and with elevation > 5 degrees
+      if (duration > 1 && maxElevation > 5) {
+        passes.push({
+          startTime: passStart,
+          endTime: passEnd,
+          maxElevation,
+          duration,
+          azimuthAtMax
+        });
+      }
 
-      currentTime = new Date(passEnd.getTime() + 10 * 60 * 1000); // Skip 10 minutes
+      // Skip to end of this pass plus 5 minutes
+      currentTime = new Date(passEnd.getTime() + 5 * 60 * 1000);
     } else {
-      currentTime.setMinutes(currentTime.getMinutes() + 10);
+      currentTime.setMinutes(currentTime.getMinutes() + intervalMinutes);
     }
   }
 

@@ -5,7 +5,6 @@ import { Location } from '@/types/location';
 
 export function useLocation() {
   const [location, setLocation] = useState<Location | undefined>(undefined);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const updateLocation = useCallback(async (newLocation: Location) => {

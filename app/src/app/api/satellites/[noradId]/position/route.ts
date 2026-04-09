@@ -3,20 +3,39 @@ import { parseTLE, getSatellitePosition, calculateObserverMetrics } from '@/lib/
 import { fetchTLE } from '@/lib/tle';
 
 export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const noradId = parseInt(searchParams.get('noradId') || '0');
-  const lat = parseFloat(searchParams.get('lat') || '0');
-  const lon = parseFloat(searchParams.get('lon') || '0');
-  const alt = parseFloat(searchParams.get('alt') || '0');
-
-  if (!noradId || isNaN(lat) || isNaN(lon)) {
-    return NextResponse.json(
-      { success: false, error: 'Invalid parameters' },
-      { status: 400 }
-    );
-  }
-
   try {
+    const { searchParams } = new URL(request.url);
+    const noradIdParam = searchParams.get('noradId');
+    const latParam = searchParams.get('lat');
+    const lonParam = searchParams.get('lon');
+    const altParam = searchParams.get('alt');
+
+    const noradId = noradIdParam ? parseInt(noradIdParam) : null;
+    const lat = latParam ? parseFloat(latParam) : null;
+    const lon = lonParam ? parseFloat(lonParam) : null;
+    const alt = altParam ? parseFloat(altParam) : 0;
+
+    if (!noradId || isNaN(noradId) || noradId <= 0) {
+      return NextResponse.json(
+        { success: false, error: 'Valid NORAD ID is required' },
+        { status: 400 }
+      );
+    }
+
+    if (lat === null || isNaN(lat) || lat < -90 || lat > 90) {
+      return NextResponse.json(
+        { success: false, error: 'Valid latitude (-90 to 90) is required' },
+        { status: 400 }
+      );
+    }
+
+    if (lon === null || isNaN(lon) || lon < -180 || lon > 180) {
+      return NextResponse.json(
+        { success: false, error: 'Valid longitude (-180 to 180) is required' },
+        { status: 400 }
+      );
+    }
+
     const tle = await fetchTLE(noradId);
     const satrec = parseTLE(tle);
     const position = getSatellitePosition(satrec, new Date());
@@ -26,12 +45,18 @@ export async function GET(request: NextRequest) {
       success: true,
       data: {
         position,
-        metrics
+        metrics,
+        timestamp: new Date().toISOString()
       }
     });
-  } catch {
+  } catch (error) {
+    console.error('Error calculating satellite position:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to calculate position' },
+      {
+        success: false,
+        error: 'Failed to calculate position',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      },
       { status: 500 }
     );
   }

@@ -46,9 +46,6 @@ export default function Settings({ className = '' }: SettingsProps) {
 
   if (!mounted) return null;
 
-  const isDark = darkMode === 'dark' || 
-    (darkMode === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-
   return (
     <div className={`bg-white dark:bg-slate-900 p-6 rounded-lg shadow-md transition-colors ${className}`}>
       <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Settings</h2>

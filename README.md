@@ -1,16 +1,24 @@
 # SATCOM-Telemetry
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-000000?logo=next.js&logoColor=white)](https://nextjs.org/)
+
 Real-time satellite tracking and telemetry application. Know where you are, when satellites pass overhead, and track their orbital data in real-time.
 
 ## Features
 
-- Real-time satellite tracking using TLE data
-- Location services with automatic geolocation or manual coordinate input
-- Live metrics including azimuth, elevation, range, and velocity calculations
-- Interactive orbital visualization with charts
-- Pass prediction calculations for satellite visibility
-- Interactive maps showing satellite positions
-- Responsive design for desktop and mobile devices
+- **Real-time satellite tracking** using live TLE data from Celestrak
+- **Location services** with automatic geolocation or manual coordinate input
+- **Live metrics** including azimuth, elevation, range, and velocity calculations
+- **Interactive orbital visualization** with charts
+- **Pass prediction calculations** for satellite visibility
+- **Interactive maps** showing satellite positions
+- **Multiple satellite categories** (35+ categories supported)
+- **Dark mode support** (Light, Dark, Auto options)
+- **Unit system selection** (Metric and Imperial measurements)
+- **Responsive design** for desktop and mobile devices
+- **Error handling** and loading states throughout the app
 
 ## Quick Start
 
@@ -57,26 +65,46 @@ npm start
 
 This application uses modern web technologies:
 
-- Frontend: Next.js 14+ with React 18+
-- Language: TypeScript for type safety
-- Styling: Tailwind CSS
-- State Management: Zustand
-- Data Fetching: TanStack Query
-- Satellite Calculations: satellite.js library
-- Maps: Leaflet with React-Leaflet
-- Charts: Chart.js with react-chartjs-2
+- **Frontend**: Next.js 16+ with React 19+
+- **Language**: TypeScript for type safety
+- **Styling**: Tailwind CSS with dark mode support
+- **State Management**: Zustand
+- **Data Fetching**: TanStack Query
+- **Satellite Calculations**: satellite.js library with SGP4/SDP4 propagation
+- **Maps**: Leaflet with React-Leaflet
+- **Charts**: Chart.js with react-chartjs-2
+- **Geocoding**: Nominatim (OpenStreetMap) - no API key required
+- **Satellite Data**: Live TLE data from Celestrak
+- **Testing**: Jest with jsdom environment
 
 ### Data Flow
 
-1. User inputs location (geolocation or manual coordinates)
-2. Satellite catalog is fetched from TLE data sources
+1. User inputs location (geolocation or manual coordinates via Nominatim geocoding)
+2. Satellite catalog is fetched live from Celestrak TLE data sources
 3. Real-time orbital calculations using SGP4 propagation
-4. Observer metrics calculated (azimuth, elevation, range)
-5. Data visualized through interactive components
+4. Observer metrics calculated (azimuth, elevation, range, velocity)
+5. Pass predictions computed with high accuracy
+6. Data visualized through interactive components with error handling
 
-## Contributing
+## Recent Improvements
 
-We welcome contributions! Please see our Contributing Guide for details.
+### v1.1.0 - Production Ready Release
+
+- **Real Satellite Data**: Replaced demo data with live Celestrak API integration
+- **Enhanced Geocoding**: Switched to free Nominatim service (no API keys needed)
+- **Improved Pass Prediction**: More accurate calculations with binary search algorithms
+- **Error Handling**: Comprehensive error handling and user feedback throughout the app
+- **Performance**: TLE data caching (24-hour cache) for better performance
+- **Code Quality**: Fixed linting issues and improved code maintainability
+- **Testing**: Added Jest testing framework with basic test suite
+- **API Improvements**: Better validation, error responses, and metadata
+
+### Key Features Added
+- Loading states and retry functionality for failed requests
+- Input validation for all API endpoints
+- Support for all 35+ satellite categories from Celestrak
+- Enhanced satellite position accuracy
+- Better mobile responsiveness
 
 ## License
 
