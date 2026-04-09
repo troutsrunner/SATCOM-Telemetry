@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Satellite } from '@/types/satellite';
 import { fetchSatelliteCatalog } from '@/lib/tle';
 
@@ -16,26 +16,23 @@ export default function SatelliteSelector({ onSatelliteSelect, selectedSatellite
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('stations');
 
-  useEffect(() => {
-    const loadSatellites = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const catalog = await fetchSatelliteCatalog(selectedCategory);
-        setSatellites(catalog);
-      } catch (err) {
-        console.error('Failed to load satellites:', err);
-        setError(err instanceof Error ? err.message : 'Failed to load satellites');
-        setSatellites([]); // Clear satellites on error
-      }
-      setLoading(false);
-    };
-    loadSatellites();
+  const loadSatellites = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const catalog = await fetchSatelliteCatalog(selectedCategory);
+      setSatellites(catalog);
+    } catch (err) {
+      console.error('Failed to load satellites:', err);
+      setError(err instanceof Error ? err.message : 'Failed to load satellites');
+      setSatellites([]); // Clear satellites on error
+    }
+    setLoading(false);
   }, [selectedCategory]);
 
-  const filteredSatellites = satellites.filter(satellite =>
-    satellite.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  useEffect(() => {
+    loadSatellites();
+  }, [selectedCategory]);
 
   const categories = [
     { value: 'stations', label: 'Space Stations' },
@@ -73,6 +70,10 @@ export default function SatelliteSelector({ onSatelliteSelect, selectedSatellite
     { value: 'cubesat', label: 'CubeSats' },
     { value: 'other', label: 'Other' }
   ];
+
+  const filteredSatellites = satellites.filter(satellite =>
+    satellite.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="bg-white dark:bg-slate-900 p-6 rounded-lg shadow-md transition-colors">

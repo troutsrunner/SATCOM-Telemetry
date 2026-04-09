@@ -19,7 +19,6 @@ export function useLocation() {
 
   return {
     location,
-    loading,
     error,
     setLocation: updateLocation,
     clearLocation
