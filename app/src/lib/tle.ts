@@ -17,14 +17,14 @@ export async function fetchTLE(noradId: number): Promise<{ line1: string; line2:
   throw new Error('TLE not found for this satellite');
 }
 
-export async function fetchSatelliteCatalog(): Promise<Satellite[]> {
+export async function fetchSatelliteCatalog(category?: string): Promise<Satellite[]> {
   // In production, fetch from Celestrak and parse
   // For demo, return sample data
   return [
     {
       name: 'ISS (ZARYA)',
       noradId: 25544,
-      category: 'stations',
+      category: category || 'stations',
       tle: await fetchTLE(25544)
     }
   ];

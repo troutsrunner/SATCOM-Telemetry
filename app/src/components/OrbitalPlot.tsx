@@ -32,7 +32,7 @@ interface OrbitalPlotProps {
 }
 
 export default function OrbitalPlot({ data }: OrbitalPlotProps) {
-  const chartRef = useRef<ChartJS>(null);
+  const chartRef = useRef<ChartJS<'line', number[], unknown> | null>(null);
 
   const chartData = {
     labels: data?.time || [],

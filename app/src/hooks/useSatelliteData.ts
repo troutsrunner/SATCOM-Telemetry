@@ -51,4 +51,6 @@ export function useSatelliteData(satellite?: Satellite, location?: Location) {
 
     return () => clearInterval(interval);
   }, [satellite, location]);
+
+  return { data, loading, error };
 }

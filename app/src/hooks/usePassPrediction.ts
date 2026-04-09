@@ -35,4 +35,6 @@ export function usePassPrediction(satellite?: Satellite, location?: Location, da
 
     calculatePassesLocal();
   }, [satellite, location, days]);
+
+  return { passes, loading, error };
 }
