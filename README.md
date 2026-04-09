@@ -1,6 +1,6 @@
 # SATCOM-Telemetry
 
-Know where you are, the satellite you want to see it, and when you can see it.
+Know where you are, the satellite you want to see is, and when you can see it.
 
 ## Technical Blueprint
 
