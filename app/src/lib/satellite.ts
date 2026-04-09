@@ -87,7 +87,6 @@ export function predictPasses(
     if (metrics.elevation > 0) {
       // Find pass start (go back until elevation <= 0)
       let passStart = new Date(currentTime);
-      let searchTime = new Date(currentTime);
 
       // Binary search for more precise start time
       let low = new Date(currentTime.getTime() - 30 * 60 * 1000); // 30 minutes back

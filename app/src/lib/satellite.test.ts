@@ -1,5 +1,6 @@
 import { describe, it, expect } from '@jest/globals';
 import { parseTLE, getSatellitePosition, calculateObserverMetrics } from '../lib/satellite';
+import { validateCoordinates } from '../lib/geolocation';
 
 // Sample ISS TLE data for testing
 const sampleTLE = {
@@ -54,8 +55,6 @@ describe('Satellite Calculations', () => {
   });
 
   it('should validate coordinates', () => {
-    const { validateCoordinates } = require('../lib/geolocation');
-
     expect(validateCoordinates(40.7128, -74.0060)).toBe(true);
     expect(validateCoordinates(91, 0)).toBe(false);
     expect(validateCoordinates(0, 181)).toBe(false);
