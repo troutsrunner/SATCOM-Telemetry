@@ -24,7 +24,7 @@ Real-time satellite tracking and telemetry application. Know where you are, when
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 20.9.0+
 - npm or yarn
 
 ### Installation
@@ -143,7 +143,7 @@ Real-time satellite tracking and telemetry application. Know where you are, when
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 20.9.0+
 - npm or yarn
 
 ### Installation
