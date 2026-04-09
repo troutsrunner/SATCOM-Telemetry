@@ -31,8 +31,9 @@ export default function SatelliteSelector({ onSatelliteSelect, selectedSatellite
   }, [selectedCategory]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadSatellites();
-  }, [selectedCategory]);
+  }, [loadSatellites]);
 
   const categories = [
     { value: 'stations', label: 'Space Stations' },
