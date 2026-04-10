@@ -15,11 +15,10 @@ const LeafletMap = dynamic(() => import('./LeafletMap'), {
 interface MapViewProps {
   location?: Location;
   satellitePosition?: { latitude: number; longitude: number };
-    satellite?: Satellite;
+  satellite?: Satellite;
 }
 
-export default function MapView({ location, satellitePosition }: MapViewProps) {
-  export default function MapView({ location, satellitePosition, satellite }: MapViewProps) {
+export default function MapView({ location, satellitePosition, satellite }: MapViewProps) {
   return (
     <div className="bg-white dark:bg-slate-900 p-6 rounded-lg shadow-md transition-colors">
       <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Location Map</h2>
