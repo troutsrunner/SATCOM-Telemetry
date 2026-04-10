@@ -5,7 +5,6 @@ import { Satellite } from '@/types/satellite';
 import LocationInput from '@/components/LocationInput';
 import SatelliteSelector from '@/components/SatelliteSelector';
 import MetricsDisplay from '@/components/MetricsDisplay';
-import OrbitalPlot from '@/components/OrbitalPlot';
 import PassTable from '@/components/PassTable';
 import MapView from '@/components/MapView';
 import Settings from '@/components/Settings';
@@ -20,13 +19,6 @@ export default function Dashboard() {
   const { unitSystem } = useSettings();
   const { data: satelliteData } = useSatelliteData(selectedSatellite, location);
   const { passes, loading: passesLoading } = usePassPrediction(selectedSatellite, location);
-
-  // Generate orbital plot data (simplified - in production, collect historical data)
-  const orbitalData = satelliteData ? {
-    time: [new Date().toLocaleTimeString()],
-    azimuth: [satelliteData.metrics.azimuth],
-    elevation: [satelliteData.metrics.elevation]
-  } : undefined;
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-slate-950 transition-colors">
@@ -66,13 +58,12 @@ export default function Dashboard() {
           />
         </div>
 
-        {/* Charts and Maps */}
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-8">
-          <OrbitalPlot data={orbitalData} />
+        {/* Location Map */}
+        <div className="mb-8">
           <MapView
             location={location}
             satellitePosition={satelliteData?.position}
-              satellite={selectedSatellite}
+            satellite={selectedSatellite}
           />
         </div>
 

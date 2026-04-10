@@ -25,7 +25,7 @@ export function getSatellitePosition(satrec: satellite.SatRec, date: Date): Sate
       positionAndVelocity.velocity.x ** 2 +
       positionAndVelocity.velocity.y ** 2 +
       positionAndVelocity.velocity.z ** 2
-    ) / 1000 // convert to km/s
+    ) // satellite.js velocity is already in km/s
   };
 }
 
