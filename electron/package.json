@@ -1,0 +1,58 @@
+{
+  "name": "satcom-telemetry-desktop",
+  "version": "0.1.0",
+  "description": "SATCOM Telemetry — standalone desktop application (Electron wrapper)",
+  "main": "main.js",
+  "scripts": {
+    "setup": "cd ../app && npm install",
+    "dev": "electron . --dev",
+    "start": "electron .",
+    "dist:mac": "npm run build:app && electron-builder --mac",
+    "dist:win": "npm run build:app && electron-builder --win",
+    "dist:linux": "npm run build:app && electron-builder --linux",
+    "build:app": "cd ../app && npm run build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^34.0.0",
+    "electron-builder": "^25.0.0"
+  },
+  "build": {
+    "appId": "com.satcom.telemetry",
+    "productName": "SATCOM Telemetry",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js"
+    ],
+    "extraResources": [
+      {
+        "from": "../app",
+        "to": "nextapp",
+        "filter": [
+          "**/*",
+          "!node_modules/.cache/**",
+          "!.next/cache/**",
+          "!.git/**"
+        ]
+      }
+    ],
+    "mac": {
+      "target": [
+        { "target": "dmg", "arch": ["x64", "arm64"] }
+      ],
+      "category": "public.app-category.utilities"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage",
+      "category": "Utility"
+    }
+  }
+}
