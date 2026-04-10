@@ -72,6 +72,7 @@ export default function Dashboard() {
           <MapView
             location={location}
             satellitePosition={satelliteData?.position}
+              satellite={selectedSatellite}
           />
         </div>
 
