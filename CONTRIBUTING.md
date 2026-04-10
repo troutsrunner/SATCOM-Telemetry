@@ -9,6 +9,17 @@ Thanks for your interest in contributing! This project is open source and welcom
 3. Make your changes in a clean, focused branch.
 4. Submit a pull request with a clear title and description.
 
+## Branches
+
+This repository has two long-lived branches:
+
+| Branch | Purpose |
+|--------|---------|
+| `main` | Web application — runs in a browser via `cd app && npm run dev` |
+| `electron` | Desktop application — wraps the web app in Electron for installation as a native app |
+
+If your change affects the web app (anything under `app/`), target `main`. If it affects the desktop wrapper (anything under `electron/`), target `electron`. Changes that affect both should be split into a PR for each branch or landed on `main` first and then cherry-picked.
+
 ## Code style
 
 - Follow existing code patterns in the project.

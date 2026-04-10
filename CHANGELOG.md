@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Electron Desktop App**: New `electron` branch wraps the web app as a standalone native desktop application using Electron + electron-builder
+  - End users can download a pre-built installer (`.exe`, `.dmg`, or `.AppImage`) — no Node.js, npm, or browser required
+  - Uses Next.js `output: 'standalone'` so the full server runs inside Electron's own Node.js runtime
+  - `electron/main.js`: spawns the standalone Next.js server in-process and opens a `BrowserWindow`
+  - `electron/preload.js`: sandboxed context bridge (`contextIsolation: true`, `nodeIntegration: false`)
+  - `electron/scripts/copy-standalone.js`: post-build helper that copies `public/` and `.next/static/` into the standalone output
+  - Distributions: macOS DMG (x64 + arm64), Windows NSIS installer, Linux AppImage
+  - Developer hot-reload mode: `npm run dev` inside `electron/` opens a live-reloading native window
 - Dark mode support (Light, Dark, Auto options)
 - Unit system selection (Metric and Imperial measurements)
 - Settings component for user preferences

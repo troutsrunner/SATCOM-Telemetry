@@ -22,12 +22,18 @@ Real-time satellite tracking and telemetry application. Know where you are, when
 
 ## Quick Start
 
-### Prerequisites
+SATCOM Telemetry can be used in two ways: as a **web application** in your browser, or as a **standalone desktop application** that requires no browser at all.
+
+---
+
+### Option 1 — Web Application (browser)
+
+#### Prerequisites
 
 - Node.js 20.9.0+
 - npm or yarn
 
-### Installation
+#### Installation
 
 1. Clone the repository:
 ```bash
@@ -47,11 +53,45 @@ npm run dev
 
 4. Open http://localhost:3000 in your browser.
 
-### Build for Production
+#### Build for Production
 
 ```bash
 npm run build
 npm start
+```
+
+---
+
+### Option 2 — Desktop Application (Electron)
+
+The `electron` branch contains a full Electron wrapper. End users can download a pre-built installer and run the app like any native desktop program — no browser, no Node.js, no setup required.
+
+| Platform | Installer type | Steps |
+|----------|---------------|-------|
+| Windows  | `.exe` (NSIS) | Download → double-click → install → click icon |
+| macOS    | `.dmg`        | Download → drag to Applications → click icon |
+| Linux    | `.AppImage`   | Download → mark executable → double-click |
+
+#### Build the Desktop Installer (developers only)
+
+> Requires Node.js 20.9.0+ on the developer's machine. End users need nothing installed.
+
+```bash
+git checkout electron
+cd electron
+npm install          # install Electron + electron-builder
+npm run setup        # install app/ dependencies (once)
+npm run dist:linux   # or dist:mac / dist:win
+# → installer output in electron/dist/
+```
+
+#### Run in Development Mode (hot-reloading desktop window)
+
+```bash
+git checkout electron
+cd electron
+npm install && npm run setup  # first time only
+npm run dev
 ```
 
 ## Usage
@@ -75,6 +115,7 @@ This application uses modern web technologies:
 - **Geocoding**: Nominatim (OpenStreetMap) - no API key required
 - **Satellite Data**: Live TLE data from Celestrak
 - **Testing**: Jest with jsdom environment
+- **Desktop App**: Electron (packaged via electron-builder) — `electron` branch
 
 ### Data Flow
 
@@ -228,37 +269,29 @@ Please see our [Security Policy](SECURITY.md) for information on reporting vulne
 - **date-fns**: Date/time manipulation for pass predictions
 - **axios**: HTTP client for TLE data fetching
 
-#### Application Structure
+#### Repository Structure
 
 ```
-src/
-├── app/                    # Next.js App Router
-│   ├── api/               # API routes
-│   │   ├── location/      # Geolocation services
-│   │   ├── satellites/    # Satellite data endpoints
-│   │   └── passes/        # Pass prediction endpoints
-│   ├── dashboard/         # Main dashboard page
-│   ├── satellites/        # Satellite selection page
-│   └── layout.tsx         # Root layout
-├── components/            # Reusable UI components
-│   ├── LocationInput.tsx  # Location input form
-│   ├── SatelliteSelector.tsx # Satellite dropdown/search
-│   ├── MetricsDisplay.tsx # Real-time metrics
-│   ├── OrbitalPlot.tsx    # Azimuth/elevation chart
-│   ├── PassTable.tsx      # Upcoming passes table
-│   └── MapView.tsx        # Location map
-├── lib/                   # Utility functions
-│   ├── satellite.ts       # Satellite calculation wrappers
-│   ├── geolocation.ts     # Location utilities
-│   └── tle.ts             # TLE data management
-├── types/                 # TypeScript type definitions
-│   ├── satellite.ts       # Satellite-related types
-│   ├── location.ts        # Location types
-│   └── api.ts             # API response types
-└── hooks/                 # Custom React hooks
-    ├── useSatelliteData.ts
-    ├── useLocation.ts
-    └── usePassPrediction.ts
+SATCOM-Telemetry/
+├── app/                        # Next.js web application
+│   ├── next.config.ts          # Next.js config (standalone output enabled)
+│   └── src/
+│       ├── app/
+│       │   ├── api/            # REST API routes
+│       │   │   ├── location/   # Geocoding
+│       │   │   ├── satellites/ # Satellite catalog + position
+│       │   │   └── passes/     # Pass predictions
+│       │   └── dashboard/      # Main dashboard page
+│       ├── components/         # UI components
+│       ├── hooks/              # Custom React hooks
+│       ├── lib/                # Satellite math, TLE, geolocation
+│       └── types/              # TypeScript type definitions
+└── electron/                   # Desktop app wrapper (electron branch)
+    ├── main.js                 # Electron main process
+    ├── preload.js              # Renderer bridge (sandboxed)
+    ├── package.json            # Electron deps + electron-builder config
+    └── scripts/
+        └── copy-standalone.js  # Post-build helper for static assets
 ```
 
 ### Data Flow and Processing
