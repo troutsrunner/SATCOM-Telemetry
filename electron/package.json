@@ -5,12 +5,12 @@
   "main": "main.js",
   "scripts": {
     "setup": "cd ../app && npm install",
-    "dev": "electron . --dev",
+    "dev": "electron .",
     "start": "electron .",
+    "build:app": "cd ../app && npm run build && node ../electron/scripts/copy-standalone.js",
     "dist:mac": "npm run build:app && electron-builder --mac",
     "dist:win": "npm run build:app && electron-builder --win",
-    "dist:linux": "npm run build:app && electron-builder --linux",
-    "build:app": "cd ../app && npm run build"
+    "dist:linux": "npm run build:app && electron-builder --linux"
   },
   "keywords": [],
   "author": "",
@@ -31,14 +31,9 @@
     ],
     "extraResources": [
       {
-        "from": "../app",
+        "from": "../app/.next/standalone",
         "to": "nextapp",
-        "filter": [
-          "**/*",
-          "!node_modules/.cache/**",
-          "!.next/cache/**",
-          "!.git/**"
-        ]
+        "filter": ["**/*"]
       }
     ],
     "mac": {
