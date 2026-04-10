@@ -18,9 +18,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Replaced the map placeholder with an interactive Leaflet map using OpenStreetMap tiles
 - Added a satellite ground track overlay (dashed polyline) to show current travel direction and path
 - Updated map behavior to preserve manual pan/zoom instead of auto-recentering on each update
+- Removed the orbital plot section from the dashboard to focus on map and metrics data
 
 ### Fixed
 - Fixed theme switching so Light and Dark selection now responds correctly with Tailwind v4 class-based dark mode
+- Corrected satellite velocity units by removing an incorrect extra scale factor in orbital speed calculation
 
 ## [1.1.0] - 2026-04-09
 

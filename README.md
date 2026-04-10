@@ -11,7 +11,7 @@ Real-time satellite tracking and telemetry application. Know where you are, when
 - **Real-time satellite tracking** using live TLE data from Celestrak
 - **Location services** with automatic geolocation or manual coordinate input
 - **Live metrics** including azimuth, elevation, range, and velocity calculations
-- **Interactive orbital visualization** with charts
+- **Interactive map overlays** with live satellite position and ground track
 - **Pass prediction calculations** for satellite visibility
 - **Interactive maps** showing satellite positions
 - **Multiple satellite categories** (35+ categories supported)
@@ -58,7 +58,7 @@ npm start
 
 1. Set your location using the location input (automatic geolocation or manual coordinates)
 2. Select a satellite from various categories (GPS, weather, communication, etc.)
-3. View real-time satellite metrics and orbital information
+3. View real-time satellite metrics and map overlays
 4. Check pass predictions to see when the satellite will be visible
 
 ## Architecture
@@ -72,7 +72,6 @@ This application uses modern web technologies:
 - **Data Fetching**: TanStack Query
 - **Satellite Calculations**: satellite.js library with SGP4/SDP4 propagation
 - **Maps**: Leaflet with React-Leaflet
-- **Charts**: Chart.js with react-chartjs-2
 - **Geocoding**: Nominatim (OpenStreetMap) - no API key required
 - **Satellite Data**: Live TLE data from Celestrak
 - **Testing**: Jest with jsdom environment
